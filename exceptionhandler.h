@@ -12,7 +12,7 @@ namespace MQ
     public:
         ExceptionHandler();
         ~ExceptionHandler();
-        void handleServerSetup(string message);
+        void handleError(string message);
     };
 }
 

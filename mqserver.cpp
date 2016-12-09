@@ -6,10 +6,12 @@
 
 using namespace MQ;
 
-MQServer::MQServer()
+MQServer::MQServer(Logger* _logger)
+    :logger{_logger}
 {
     _exception_handler = ExceptionHandler{};
     setupServer();
+    broadcast(QByteArray::number(_server->serverPort()));
 }
 
 MQServer::~MQServer()
@@ -17,16 +19,20 @@ MQServer::~MQServer()
 
 }
 
-void MQServer::setupServer()
+void MQServer::setupServer() throw(exception)
 {
-    _server = new QTcpServer();
+    logger->log("Setting up server");
     try{
-        if(_server->isListening()){
-            throw "Server was not setup";
+        _server = new QTcpServer();
+        _server->listen(QHostAddress::Any, 0);
+
+        if(!_server->isListening()){
+            throw exception();
         }
     } catch (exception& ex){
-        _exception_handler.handleServerSetup(ex.what());
+        _exception_handler.handleError(_server->errorString().toStdString());
     }
+    logger->log("Server was setup");
 }
 
 void MQServer::spawnClients()
@@ -37,4 +43,29 @@ void MQServer::spawnClients()
 void MQServer::handleClient()
 {
 
+}
+
+QString MQServer::getIP() const
+{
+    QHostAddress IP = _server->serverAddress();
+    return IP.toString();
+}
+
+quint16 MQServer::getPort() const
+{
+    return _server->serverPort();
+}
+
+void MQServer::broadcast(QByteArray const & arr_byte)
+{
+    try{
+    QUdpSocket udp_sck{};
+    quint16 log = udp_sck.writeDatagram(arr_byte, QHostAddress::Broadcast, 45454);
+    if(log == 0)
+        throw exception();
+    udp_sck.close();
+    logger->log("Broadcasting message: " + arr_byte.toStdString());
+    } catch(exception & ex){
+        broadcast(arr_byte);
+    }
 }
