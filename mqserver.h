@@ -9,20 +9,20 @@
 
 namespace MQ
 {
-    class MQServer
+    class MQServer : public QTcpServer
     {
     public:
-        MQServer(Logger* _logger);
+        MQServer(QObject* parent, Logger* _logger);
         ~MQServer();
         QString getIP() const;
         quint16 getPort() const;
+        int getNumberClients() const;
     private:
-        void setupServer() throw(exception);
-        void spawnClients();
-        void handleClient();
+        void startServer() throw(exception);
         void broadcast(QByteArray const & arr_byte);
-        QTcpServer* _server;
-        vector<QTcpSocket> _clients;
+        void incomingConnection(qintptr socketDescriptor);
+
+        vector<QTcpSocket*> _clients;
         ExceptionHandler _exception_handler;
         Logger* logger;
     };

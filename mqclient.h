@@ -9,10 +9,11 @@ namespace MQ {
     class MQClient
     {
     public:
-        MQClient(Logger* _logger);
+        MQClient(Logger* _logger, int port);
         ~MQClient();
     private:
         Logger* logger;
+        QTcpSocket* tcp_socket;
     };
 }
 #endif // MQCLIENT_H

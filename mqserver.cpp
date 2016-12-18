@@ -3,15 +3,15 @@
 #include <QtNetwork/QTcpServer>
 #include <exception>
 #include "exceptionhandler.h"
+#include <vector>
 
 using namespace MQ;
 
-MQServer::MQServer(Logger* _logger)
-    :logger{_logger}
+MQServer::MQServer(QObject* parent, Logger* _logger)
+    :QTcpServer(parent), logger{_logger}
 {
     _exception_handler = ExceptionHandler{};
-    setupServer();
-    broadcast(QByteArray::number(_server->serverPort()));
+    startServer();
 }
 
 MQServer::~MQServer()
@@ -19,41 +19,40 @@ MQServer::~MQServer()
 
 }
 
-void MQServer::setupServer() throw(exception)
+void MQServer::startServer() throw(exception)
 {
     logger->log("Setting up server");
     try{
-        _server = new QTcpServer();
-        _server->listen(QHostAddress::Any, 0);
+        listen(QHostAddress::Any, 0);
 
-        if(!_server->isListening()){
+        if(isListening()){
             throw exception();
         }
     } catch (exception& ex){
-        _exception_handler.handleError(_server->errorString().toStdString());
+        _exception_handler.handleError(errorString().toStdString());
     }
+    broadcast(QByteArray::number(serverPort()));
     logger->log("Server was setup");
 }
 
-void MQServer::spawnClients()
+void MQServer::incomingConnection(qintptr socketDescriptor)
 {
-
-}
-
-void MQServer::handleClient()
-{
-
+    logger->log("New player connected");
+    QTcpSocket *clientConnection = new QTcpSocket();
+    clientConnection->setSocketDescriptor(socketDescriptor);
+    QObject::connect(clientConnection, &QAbstractSocket::disconnected, clientConnection, &QObject::deleteLater);
+    _clients.push_back(clientConnection);
 }
 
 QString MQServer::getIP() const
 {
-    QHostAddress IP = _server->serverAddress();
+    QHostAddress IP = serverAddress();
     return IP.toString();
 }
 
 quint16 MQServer::getPort() const
 {
-    return _server->serverPort();
+    return serverPort();
 }
 
 void MQServer::broadcast(QByteArray const & arr_byte)
@@ -68,4 +67,9 @@ void MQServer::broadcast(QByteArray const & arr_byte)
     } catch(exception & ex){
         broadcast(arr_byte);
     }
+}
+
+int MQServer::getNumberClients() const
+{
+    return (int) (_clients.size());
 }

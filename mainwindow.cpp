@@ -29,11 +29,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    MQServer server{logger};
-    QString ip = server.getIP();
-    quint16 port = server.getPort();
+    server = new MQServer(this, logger);
+    QString ip = server->getIP();
+    quint16 port = server->getPort();
     ui->label_server_ip->setText(ip);
     ui->label_server_port->setText(QString::number(port));
+
+//    connect(server->getServer(), QTcpServer::newConnection, server->getServer(), server->spawnClients);
+    connect(server, QTcpServer::newConnection, this, updatePlayersCounter);
 }
 
 void MainWindow::listenToBroadcast()
@@ -55,5 +58,18 @@ void MainWindow::onServerCreatedBroadcast()
         stringstream ss;
         ss << "Received datagram: " << datagram.data();
         logger->log(ss.str());
+
+        ui->comboBox_servers->addItem(datagram.data(), datagram.data());
     }
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+     int  selected = ui->comboBox_servers->currentData().toInt();
+    MQClient client{logger, selected};
+}
+
+void MainWindow::updatePlayersCounter()
+{
+    ui->lcdNumber_players->display(server->getNumberClients());
 }
