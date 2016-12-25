@@ -14,7 +14,7 @@ namespace MQ
     class MQGrid
     {
     public:
-        MQGrid(int _num_rows, int _num_cols, vector<MQPosition> _vec_players_positions);
+        MQGrid(int _num_rows, int _num_cols, const vector<MQPosition>& _vec_players_positions);
         ~MQGrid();
         void setPlayersPositions(vector<MQPosition>& _vec_players_positions);
 

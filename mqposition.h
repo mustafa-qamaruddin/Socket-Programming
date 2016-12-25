@@ -10,6 +10,18 @@ namespace MQ
         {
         }
 
+        MQPosition(const MQPosition& rhs){
+            row = rhs.row;
+            col = rhs.col;
+        }
+
+        MQPosition& operator=(const MQPosition& rhs)
+        {
+            row = rhs.row;
+            col = rhs.col;
+            return *this;
+        }
+
         ~MQPosition()
         {
         }

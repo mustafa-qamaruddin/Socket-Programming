@@ -80,13 +80,22 @@ void MQRender::drawPlayers()
     int num_players = (int)grid->vec_players_positions.size();
     for(int i = 0; i < num_players; i++)
     {
+        QPen new_pen{Qt::blue+i*100};
+        painter->setPen(new_pen);
+
         MQPosition p = grid->vec_players_positions.at(i);
         int x = p.col;
         int y = p.row;
 
         QPoint c{};
-        c.setX(x * cell_width + cell_width / 4);
-        c.setY(normalizeY(y * cell_height + cell_height / 4));
+        double dx = x * cell_width + cell_width / 4;
+        if(i%2!=0)
+            dx = x * cell_width + 3 * cell_width / 4;
+        c.setX(dx);
+        double dy = y * cell_height + cell_height / 4;
+        if(i%2==0)
+            dy = y * cell_height + 3 * cell_height / 4;
+        c.setY(normalizeY(dy));
 
         painter->drawEllipse(c, cell_width / 4, cell_height / 4);
         painter->drawText(c, QString::number(i+1));

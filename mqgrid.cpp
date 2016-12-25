@@ -8,7 +8,7 @@
 using namespace std;
 using namespace MQ;
 
-MQGrid::MQGrid(int _num_rows, int _num_cols, vector<MQPosition> _vec_players_positions)
+MQGrid::MQGrid(int _num_rows, int _num_cols, const vector<MQPosition> &_vec_players_positions)
     :num_rows{_num_rows}, num_cols{_num_cols}, vec_players_positions{_vec_players_positions}
 {
     initGrid();

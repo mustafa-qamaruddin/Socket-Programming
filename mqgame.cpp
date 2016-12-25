@@ -8,10 +8,11 @@ MQGame::MQGame(int _n)
     :number_of_players{_n}
 {
     players_positions.reserve(number_of_players);
-    for(int i = 0; i < (int)players_positions.size(); i++)
+    for(int i = 0; i < number_of_players; i++)
     {
-        players_positions[i] = MQPosition{0, 0};
+        players_positions.push_back(MQPosition{0, 0});
     }
+    int temp = (int)players_positions.size();
     grid = new MQGrid(num_rows, num_cols, players_positions);
 }
 
