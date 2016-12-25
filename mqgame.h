@@ -14,7 +14,7 @@ namespace MQ
 class MQGame
 {
 public:
-    MQGame();
+    MQGame(int _n);
     ~MQGame();
 
     void requestPlay(int player_index);
@@ -25,10 +25,13 @@ public:
     int number_of_players;
     int current_turen;
 
-    MQServer game_server;
-    MQGrid grid;
+    MQServer* game_server;
+    MQGrid* grid;
 
     vector<MQPosition> players_positions;
+
+    const int num_rows = 10;
+    const int num_cols = 10;
 };
 }
 #endif // MQGAME_H

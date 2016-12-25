@@ -8,7 +8,7 @@ namespace MQ
     class MQLadder: public MQItem
     {
     public:
-        MQLadder(int _r1, int _c1, int _r2, int _c2, int _length);
+        MQLadder(int _r1, int _c1, int _r2, int _c2, int _l);
         ~MQLadder();
     };
 }

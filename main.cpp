@@ -2,14 +2,15 @@
 #include <QApplication>
 
 #include <QtTest/QTest>
-#include "tests/Headers/mqgridut.h"
+#include "Tests/Headers/mqgridut.h"
 
 int main(int argc, char *argv[])
 {
-    return QTest::qExec(new MQ::MQGridUT, argc, argv);
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
+//    return QTest::qExec(new MQ::MQGridUT, argc, argv);
 
-//    return a.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

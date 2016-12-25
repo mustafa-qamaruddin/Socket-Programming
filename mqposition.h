@@ -10,7 +10,9 @@ namespace MQ
         {
         }
 
-        ~MQPosition();
+        ~MQPosition()
+        {
+        }
 
         int row;
         int col;

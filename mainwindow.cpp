@@ -1,10 +1,13 @@
+#include <string>
+#include <sstream>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "mqserver.h"
-#include <string>
-#include <sstream>
 #include "logger.h"
 #include "mqclient.h"
+#include "mqgame.h"
+#include "Views/Headers/mqrender.h"
 
 using namespace MQ;
 using namespace std;
@@ -36,7 +39,7 @@ void MainWindow::on_pushButton_clicked()
     ui->label_server_port->setText(QString::number(port));
 
 //    connect(server->getServer(), QTcpServer::newConnection, server->getServer(), server->spawnClients);
-    connect(server, QTcpServer::newConnection, this, updatePlayersCounter);
+    connect(server, SIGNAL(newConnection()), this, SLOT(updatePlayersCounter()));
 }
 
 void MainWindow::listenToBroadcast()
@@ -72,4 +75,11 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::updatePlayersCounter()
 {
     ui->lcdNumber_players->display(server->getNumberClients());
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    MQGame g{server->getNumberClients()};
+    MQRender* r = new MQRender(g.grid, this);
+    r->show();
 }

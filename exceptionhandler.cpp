@@ -1,5 +1,7 @@
 #include "exceptionhandler.h"
+
 #include <QMessageBox>
+#include <QString>
 
 using namespace MQ;
 

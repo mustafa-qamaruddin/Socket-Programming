@@ -6,6 +6,9 @@
 #include "logger.h"
 #include "mqserver.h"
 
+struct SDL_Renderer;
+typedef struct SDL_Renderer SDL_Renderer;
+
 using namespace MQ;
 
 namespace Ui {
@@ -15,23 +18,24 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     Logger* logger;
     void listenToBroadcast();
-    void updatePlayersCounter();
+    void setupSDL();
 private slots:
     void on_pushButton_clicked();
     void onServerCreatedBroadcast();
-
+    void updatePlayersCounter();
     void on_pushButton_2_clicked();
-
+    void on_pushButton_3_clicked();
 private:
     Ui::MainWindow *ui;
     QUdpSocket* udpSocket;
     MQServer* server;
+    int image_w = 300;
+    int image_h = 300;
 };
 
 #endif // MAINWINDOW_H

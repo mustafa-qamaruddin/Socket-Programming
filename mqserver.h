@@ -4,6 +4,7 @@
 #include <vector>
 #include <QtNetwork/QtNetwork>
 #include <QtNetwork/QTcpServer>
+#include <QtGlobal>
 #include "exceptionhandler.h"
 #include "logger.h"
 

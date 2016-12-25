@@ -1,6 +1,5 @@
 #include "mqclient.h"
 #include <QtNetwork>
-#include <QtWidgets>
 
 using namespace std;
 using namespace MQ;

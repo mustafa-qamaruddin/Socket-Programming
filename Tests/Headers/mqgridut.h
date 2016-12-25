@@ -19,6 +19,8 @@ namespace MQ
         void testOverlap();
         void testNumItems_data();
         void testNumItems();
+        void testItemsBoundaries_data();
+        void testItemsBoundaries();
     };
 }
 

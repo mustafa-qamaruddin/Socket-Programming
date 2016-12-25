@@ -16,5 +16,5 @@ MQItem::~MQItem()
 
 bool MQItem::overlap(MQItem const & lhs) const
 {
-    return( (r1 != lhs.r1) || (c2 < lhs.c1) || (c1 > lhs.c2 ) );
+    return( (c1 == lhs.c1) && ((r2 > lhs.r1) || (r1 < lhs.r2 ) ) );
 }
