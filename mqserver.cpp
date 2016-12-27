@@ -1,9 +1,14 @@
 #include "mqserver.h"
+#include "exceptionhandler.h"
+#include "mqthread.h"
+
+#include <exception>
+#include <vector>
+#include <sstream>
+
 #include <QtNetwork/QtNetwork>
 #include <QtNetwork/QTcpServer>
-#include <exception>
-#include "exceptionhandler.h"
-#include <vector>
+
 
 using namespace MQ;
 
@@ -38,10 +43,7 @@ void MQServer::startServer() throw(exception)
 void MQServer::incomingConnection(qintptr socketDescriptor)
 {
     logger->log("New player connected");
-    QTcpSocket *clientConnection = new QTcpSocket();
-    clientConnection->setSocketDescriptor(socketDescriptor);
-    QObject::connect(clientConnection, &QAbstractSocket::disconnected, clientConnection, &QObject::deleteLater);
-    _clients.push_back(clientConnection);
+    _clients.push_back(socketDescriptor);
 }
 
 QString MQServer::getIP() const
@@ -72,4 +74,20 @@ void MQServer::broadcast(QByteArray const & arr_byte)
 int MQServer::getNumberClients() const
 {
     return (int) (_clients.size());
+}
+
+void MQServer::sendQDataStream(QByteArray& qba)
+{
+    logger->log("Spawning Threads");
+    for(int i = 0; i < getNumberClients(); i++)
+    {
+        QTcpSocket *client_socket = new QTcpSocket();
+        client_socket->setSocketDescriptor(_clients[i]);
+        int n = client_socket->write(qba);
+        qDebug() << n;
+        client_socket->close();
+        stringstream ss;
+        ss << "Client #" << i << " was notified";
+        logger->log(ss.str());
+    }
 }

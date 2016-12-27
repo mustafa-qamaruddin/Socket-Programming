@@ -37,7 +37,7 @@ void MQGridUT::testInit()
     }
 
     QBENCHMARK {
-        MQGrid mq{num_rows, num_cols, players_positions};
+        MQGrid mq{num_rows, num_cols, &players_positions};
 
         QVERIFY(mq.num_cols == num_cols);
         QVERIFY(mq.num_rows == num_rows);
@@ -63,7 +63,7 @@ void MQGridUT::testOverlap(){
     {
         players_positions[i] = MQPosition{0, 0};
     }
-    MQGrid grid{num_rows, num_cols, players_positions};
+    MQGrid grid{num_rows, num_cols, &players_positions};
     int num_snakes = (int)grid.vec_snakes.size();
     int num_ladders = (int)grid.vec_ladders.size();
     for(int i = 0; i < num_snakes; i++)
@@ -101,7 +101,7 @@ void MQGridUT::testNumItems(){
     {
         players_positions[i] = MQPosition{0, 0};
     }
-    MQGrid grid{num_rows, num_cols, players_positions};
+    MQGrid grid{num_rows, num_cols, &players_positions};
     QVERIFY(grid.MAX_LADDERS >= (int)grid.vec_ladders.size());
     QVERIFY(grid.MAX_SNAKES >= (int)grid.vec_snakes.size());
 }
@@ -127,7 +127,7 @@ void MQGridUT::testItemsBoundaries()
     {
         players_positions[i] = MQPosition{0, 0};
     }
-    MQGrid grid{num_rows, num_cols, players_positions};
+    MQGrid grid{num_rows, num_cols, &players_positions};
 
     for(int i = 0; i < grid.num_of_snakes; i++)
     {

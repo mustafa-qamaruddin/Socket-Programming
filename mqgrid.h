@@ -14,9 +14,10 @@ namespace MQ
     class MQGrid
     {
     public:
-        MQGrid(int _num_rows, int _num_cols, const vector<MQPosition>& _vec_players_positions);
+        MQGrid(int _num_rows, int _num_cols, vector<MQPosition> *_vec_players_positions);
+        MQGrid(const MQGrid& rhs);
         ~MQGrid();
-        void setPlayersPositions(vector<MQPosition>& _vec_players_positions);
+        void setPlayersPositions(vector<MQPosition>* _vec_players_positions);
 
         void initGrid();
         void logGrid();
@@ -37,7 +38,7 @@ namespace MQ
 
         vector<MQ::MQSnake> vec_snakes;
         vector<MQ::MQLadder> vec_ladders;
-        vector<MQ::MQPosition> vec_players_positions;
+        vector<MQ::MQPosition>* vec_players_positions;
 
         vector<vector<int> > grid;
 

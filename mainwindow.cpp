@@ -1,8 +1,11 @@
 #include <string>
 #include <sstream>
+#include <QDataStream>
+#include <QObject>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "mqserver.h"
 #include "logger.h"
 #include "mqclient.h"
@@ -23,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logger->log("System Initialized");
 
     listenToBroadcast();
+    mq_thread_pl = new QThreadPool(this);
 }
 
 MainWindow::~MainWindow()
@@ -38,7 +42,6 @@ void MainWindow::on_pushButton_clicked()
     ui->label_server_ip->setText(ip);
     ui->label_server_port->setText(QString::number(port));
 
-//    connect(server->getServer(), QTcpServer::newConnection, server->getServer(), server->spawnClients);
     connect(server, SIGNAL(newConnection()), this, SLOT(updatePlayersCounter()));
 }
 
@@ -68,8 +71,9 @@ void MainWindow::onServerCreatedBroadcast()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-     int  selected = ui->comboBox_servers->currentData().toInt();
+    int  selected = ui->comboBox_servers->currentData().toInt();
     MQClient client{logger, selected};
+    connect(client.tcp_socket, SIGNAL(readyRead()), this, SLOT(handleResponse()));
 }
 
 void MainWindow::updatePlayersCounter()
@@ -79,7 +83,41 @@ void MainWindow::updatePlayersCounter()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    MQGame g{server->getNumberClients()};
-    MQRender* r = new MQRender(g.grid, this);
-    r->show();
+    mqgame = new MQGame(server->getNumberClients());
+    mqrender = new MQRender(mqgame->grid, this);
+    mqrender->show();
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    // send grid to clients
+    QFile mq_file("shared_grid.dat");
+    if(!mq_file.open(QIODevice::WriteOnly))
+    {
+        logger->log("Save Grid Failed");
+        return;
+    }
+    QDataStream qds(&mq_file);
+    qds.setVersion(QDataStream::Qt_DefaultCompiledVersion);
+    qds << *(mqrender->pix_map);
+    mq_file.close();
+
+    QByteArray block;
+    block.append(1);
+    qDebug() << block;
+    server->sendQDataStream(block);
+}
+
+void MainWindow::handleResponse()
+{
+    logger->log("Handling Server Response");
+    QFile mq_file{"shared_grid.dat"};
+    if( !mq_file.open( QIODevice::ReadOnly ) )
+        return;
+    QDataStream qds{&mq_file};
+    qds.setVersion(QDataStream::Qt_DefaultCompiledVersion);
+    QPixmap qpm;
+    qds >> qpm;
+    mq_file.close();
+    ui->label_5->setPixmap(qpm);
 }

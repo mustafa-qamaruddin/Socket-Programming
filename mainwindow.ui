@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>544</x>
+      <x>670</x>
       <y>0</y>
-      <width>91</width>
-      <height>23</height>
+      <width>131</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -32,7 +32,7 @@
      <rect>
       <x>150</x>
       <y>30</y>
-      <width>161</width>
+      <width>81</width>
       <height>23</height>
      </rect>
     </property>
@@ -97,8 +97,8 @@
      <rect>
       <x>0</x>
       <y>400</y>
-      <width>640</width>
-      <height>80</height>
+      <width>791</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -109,8 +109,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>638</width>
-       <height>78</height>
+       <width>789</width>
+       <height>189</height>
       </rect>
      </property>
      <widget class="QLabel" name="label_console">
@@ -118,8 +118,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>640</width>
-        <height>80</height>
+        <width>791</width>
+        <height>191</height>
        </rect>
       </property>
       <property name="cursor">
@@ -166,7 +166,7 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>240</x>
       <y>30</y>
       <width>51</width>
       <height>16</height>
@@ -179,9 +179,9 @@
    <widget class="QLCDNumber" name="lcdNumber_players">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>300</x>
       <y>30</y>
-      <width>31</width>
+      <width>51</width>
       <height>23</height>
      </rect>
     </property>
@@ -189,14 +189,87 @@
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>360</x>
       <y>30</y>
-      <width>201</width>
+      <width>101</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
+     <string>Generate Grid</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>30</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
      <string>Start Game</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>301</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>649</x>
+      <y>220</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Roll Dice</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>130</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Current Turn</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>160</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>48</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

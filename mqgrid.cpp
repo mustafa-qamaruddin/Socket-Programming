@@ -4,15 +4,21 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <QDataStream>
 
 using namespace std;
 using namespace MQ;
 
-MQGrid::MQGrid(int _num_rows, int _num_cols, const vector<MQPosition> &_vec_players_positions)
+MQGrid::MQGrid(int _num_rows, int _num_cols, vector<MQPosition>* _vec_players_positions)
     :num_rows{_num_rows}, num_cols{_num_cols}, vec_players_positions{_vec_players_positions}
 {
     initGrid();
     logGrid();
+}
+
+MQGrid::MQGrid(const MQGrid &rhs)
+{
+
 }
 
 MQGrid::~MQGrid()
@@ -130,7 +136,7 @@ void MQGrid::logGrid()
     of.close();
 }
 
-void MQGrid::setPlayersPositions(vector<MQPosition>& _vec_players_positions)
+void MQGrid::setPlayersPositions(vector<MQPosition>* _vec_players_positions)
 {
     vec_players_positions = _vec_players_positions;
 }

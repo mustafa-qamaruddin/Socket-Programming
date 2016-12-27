@@ -14,6 +14,13 @@ MQRender::~MQRender()
 MQRender::MQRender(MQGrid* _grid, QWidget* parent)
     :QWidget(parent), grid{_grid}
 {
+    setPen();
+    setBrush();
+    setPainter();
+    resize(MQWIDTH, MQHEIGHT);
+    move(10, 70);
+    drawGrid();
+    drawPlayers();
 }
 
 QPoint MQRender::mapFromParent(const QPoint& parent_pos) const
@@ -24,21 +31,10 @@ QPoint MQRender::mapFromParent(const QPoint& parent_pos) const
 
 void MQRender::paintEvent(QPaintEvent* event)
 {
-    setPen();
-    setBrush();
-    setPainter();
-    resize(MQWIDTH, MQHEIGHT);
-    move(10, 70);
-    drawGrid();
-    drawPlayers();
-    update();
 }
 
 void MQRender::drawGrid()
 {
-//    pix_map = new QPixmap(MQWIDTH, MQHEIGHT);
-//    pix_map->fill(Qt::white);
-
     painter->drawRect(0, 0, MQWIDTH, MQHEIGHT);
 
     cell_width = MQWIDTH / grid->num_cols;
@@ -72,29 +68,25 @@ void MQRender::drawGrid()
         painter->drawRoundedRect(QRectF(x1, y2, cell_width, h), 10, 10);
     }
 
-    // restore to optimise
+    // restore to optimize
 }
 
 void MQRender::drawPlayers()
 {
-    int num_players = (int)grid->vec_players_positions.size();
+    int num_players = (int)grid->vec_players_positions->size();
     for(int i = 0; i < num_players; i++)
     {
-        QPen new_pen{Qt::blue+i*100};
+        QPen new_pen{Qt::blue};
         painter->setPen(new_pen);
 
-        MQPosition p = grid->vec_players_positions.at(i);
+        MQPosition p = grid->vec_players_positions->at(i);
         int x = p.col;
         int y = p.row;
 
         QPoint c{};
-        double dx = x * cell_width + cell_width / 4;
-        if(i%2!=0)
-            dx = x * cell_width + 3 * cell_width / 4;
+        double dx = x * cell_width + cell_width / 4 + 2 * i * cell_width / 4;
         c.setX(dx);
-        double dy = y * cell_height + cell_height / 4;
-        if(i%2==0)
-            dy = y * cell_height + 3 * cell_height / 4;
+        double dy = y * cell_height + cell_height / 4 + 2 * i * cell_height / 4;
         c.setY(normalizeY(dy));
 
         painter->drawEllipse(c, cell_width / 4, cell_height / 4);
@@ -104,7 +96,8 @@ void MQRender::drawPlayers()
 
 void MQRender::setPainter()
 {
-    painter = new QPainter(this);
+    pix_map = new QPixmap(MQWIDTH, MQHEIGHT);
+    painter = new QPainter(pix_map);
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(*pen);
     painter->setBrush(*brush);

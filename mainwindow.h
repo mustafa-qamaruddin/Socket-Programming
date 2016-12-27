@@ -5,9 +5,8 @@
 #include <QtNetwork>
 #include "logger.h"
 #include "mqserver.h"
-
-struct SDL_Renderer;
-typedef struct SDL_Renderer SDL_Renderer;
+#include "mqgame.h"
+#include "Views/Headers/mqrender.h"
 
 using namespace MQ;
 
@@ -30,12 +29,18 @@ private slots:
     void updatePlayersCounter();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
+    void handleResponse();
+
 private:
     Ui::MainWindow *ui;
     QUdpSocket* udpSocket;
     MQServer* server;
     int image_w = 300;
     int image_h = 300;
+    MQRender* mqrender;
+    MQGame* mqgame;
+    QThreadPool* mq_thread_pl;
 };
 
 #endif // MAINWINDOW_H

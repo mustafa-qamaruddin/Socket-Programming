@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     mqsnake.cpp \
     mqutilities.cpp \
     Tests/Sources/mqgridut.cpp \
-    Views/Sources/mqrender.cpp
+    Views/Sources/mqrender.cpp \
+    mqthread.cpp
 
 HEADERS  += mainwindow.h \
     exceptionhandler.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     mqutilities.h \
     ui_mainwindow.h \
     Tests/Headers/mqgridut.h \
-    Views/Headers/mqrender.h
+    Views/Headers/mqrender.h \
+    mqthread.h
 
 FORMS += \
     mainwindow.ui

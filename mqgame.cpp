@@ -12,8 +12,7 @@ MQGame::MQGame(int _n)
     {
         players_positions.push_back(MQPosition{0, 0});
     }
-    int temp = (int)players_positions.size();
-    grid = new MQGrid(num_rows, num_cols, players_positions);
+    grid = new MQGrid(num_rows, num_cols, &players_positions);
 }
 
 MQGame::~MQGame()
